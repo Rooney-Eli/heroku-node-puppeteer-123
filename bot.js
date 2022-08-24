@@ -8,7 +8,7 @@ const bot = async () => {
     })
     const page = await browser.newPage()
     await page.setContent(`<p>web running at ${Date()}</p>`)
-    const content = page.content()
+    const content = await page.content()
     await browser.close()
     return content
 

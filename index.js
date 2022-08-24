@@ -14,6 +14,7 @@ app.get("/api/", (req, res) => {
 })
 
 app.get("/api/scrape", async (req, res) => {
+    console.log("ENDPOINT: /api/scrape get a GET")
     const response = await bot()
     res.send(response)
 })
