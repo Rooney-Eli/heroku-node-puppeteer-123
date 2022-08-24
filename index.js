@@ -1,5 +1,5 @@
 const express = require("express")
-
+const bot =  require("./bot.js")
 const app = express()
 
 const port = process.env.PORT || 3000
@@ -13,7 +13,7 @@ app.get("/api/", (req, res) => {
     res.send("Hello from api!")
 })
 
-app.get("/api/hello", (req, res) => {
-    console.log("ENDPOINT: /api/hello got a GET")
-    res.send("Hello from api/hello!")
+app.get("/api/scrape", async (req, res) => {
+    const response = await bot()
+    res.send(response)
 })
