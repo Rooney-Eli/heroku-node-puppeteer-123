@@ -1,4 +1,4 @@
-Setup:
+Setup:\
     Initialize npm project importing express and puppeteer\
     Create Procfile with contents \
     Write the actual JS code \
