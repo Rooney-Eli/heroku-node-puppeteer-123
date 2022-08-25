@@ -22,18 +22,24 @@ app.get("/api/scrape/ow/lastPlayed/:name", async (req, res) => {
     }
 
     console.log(`ENDPOINT: /api/scrape/ow/lastPlayed/${playerName} got a GET`)
+    try {
+        const lastPlayedEpochSelector = 'body > div.skin-container.seemsgood > div.container.main > div > div > div.layout-header > div:nth-child(1) > div:nth-child(1) > div > div.layout-header-primary-bio > div:nth-child(2) > span'
+        const url = `https://www.overbuff.com/players/pc/${playerName}?mode=competitive`
+        const html = await axios.get(url)
+        const response = html.data
+        const $ = await cheerio.load(response);
 
-    const lastPlayedEpochSelector = 'body > div.skin-container.seemsgood > div.container.main > div > div > div.layout-header > div:nth-child(1) > div:nth-child(1) > div > div.layout-header-primary-bio > div:nth-child(2) > span'
-    const url = `https://www.overbuff.com/players/pc/${playerName}?mode=competitive`
-    const html = await axios.get(url)
-    const response = html.data
-    const $ = await cheerio.load(response);
+        const lastPlayedEpoch = await $(lastPlayedEpochSelector).attr('data-time')
 
-    const lastPlayedEpoch = await $(lastPlayedEpochSelector).attr('data-time')
+        console.log(`ENDPOINT: /api/scrape/ow/lastPlayed/${playerName} responding with ${lastPlayedEpoch}`)
 
-    console.log(`ENDPOINT: /api/scrape/ow/lastPlayed/${playerName} responding with ${lastPlayedEpoch}`)
+        res.send(lastPlayedEpoch)
 
-    res.send(lastPlayedEpoch)
+    } catch (e) {
+        console.log(`ERROR: ENDPOINT: /api/scrape/ow/lastPlayed/${playerName}` )
+        res.sendStatus(500)
+    }
+
 })
 
 app.get("/api/scrape/ow/ranks/:name", async (req, res) => {
@@ -57,8 +63,9 @@ app.get("/api/scrape/ow/ranks/:name", async (req, res) => {
         console.log(`ENDPOINT: /api/scrape/ow/ranks/${playerName} responding with ${JSON.stringify(ranks)}`)
 
         res.send(ranks)
-    }
-    catch (e) {
+    } catch (e) {
+        console.log(`ERROR: ENDPOINT: /api/scrape/ow/ranks/${playerName}` )
         res.sendStatus(500)
     }
+
 })
