@@ -1,14 +1,5 @@
-const puppeteer = require('puppeteer')
-
-const overwatchBot = async (playerName) => {
-    const browser = await puppeteer.launch({
-        headless:true,
-        args: ['--no-sandbox']
-    })
-
+const overwatchBot = async (playerName, browser) => {
     const page = await browser.newPage()
-
-    await page.setViewport({width: 999, height: 300})
     await page.goto(`https://playoverwatch.com/en-us/career/pc/${playerName}/`)
     await page.waitForNetworkIdle({idleTime: 1})
 
@@ -25,8 +16,7 @@ const overwatchBot = async (playerName) => {
 
     await browser.close()
 
-    console.log(`SERVICE: Bot finished scraping data for ${playerName}`)
-
+    console.log(`SERVICE: overwatchBot finished scraping data for ${playerName}`)
 
     return { ranks: ranks }
 }
